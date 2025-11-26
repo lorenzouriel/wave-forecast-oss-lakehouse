@@ -10,12 +10,11 @@ wave-forecast-lakehouse
  ┣ mlflow
  ┣ minio_data (ignored)
  ┣ docs
- ┃ ┣ arquitetura.png
- ┃ ┗ readme.pdf
+ ┃ ┣ architecture.png
  ┣ docker-compose.yml
- ┣ README.md
- ┗ ROADMAP.md
+ ┗ README.md
 ```
+
 ## Architecture
 > MinIO + Airflow + dbt + Dremio + Iceberg + MLflow + FastAPI
 
