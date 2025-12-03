@@ -1,0 +1,61 @@
+# Temporal dynamic configuration for Airbyte development environment
+# This file configures Temporal workflow engine settings
+
+# Workflow execution settings
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}
+
+# Retention settings
+system.defaultWorkflowRetentionDays:
+  - value: 30
+    constraints: {}
+
+# Frontend service settings
+frontend.enableClientVersionCheck:
+  - value: false
+    constraints: {}
+
+# History service settings
+history.defaultActivityRetryPolicy:
+  - value:
+      InitialIntervalInSeconds: 1
+      MaximumIntervalInSeconds: 100
+      BackoffCoefficient: 2.0
+      MaximumAttempts: 0
+    constraints: {}
+
+history.defaultWorkflowRetryPolicy:
+  - value:
+      InitialIntervalInSeconds: 1
+      MaximumIntervalInSeconds: 100
+      BackoffCoefficient: 2.0
+      MaximumAttempts: 0
+    constraints: {}
+
+# Matching service settings
+matching.numTaskqueueReadPartitions:
+  - value: 4
+    constraints: {}
+
+matching.numTaskqueueWritePartitions:
+  - value: 4
+    constraints: {}
+
+# Worker service settings
+worker.enableScheduler:
+  - value: true
+    constraints: {}
+
+# Limit settings to prevent resource exhaustion
+limit.maxIDLength:
+  - value: 255
+    constraints: {}
+
+limit.blobSizeLimitError:
+  - value: 2097152
+    constraints: {}
+
+limit.blobSizeLimitWarn:
+  - value: 524288
+    constraints: {}

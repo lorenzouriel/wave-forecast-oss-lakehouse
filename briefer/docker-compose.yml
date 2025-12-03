@@ -1,0 +1,88 @@
+services:
+  briefer-db:
+    image: postgres:15
+    container_name: briefer-db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${BRIEFER_DB_USER}
+      POSTGRES_PASSWORD: ${BRIEFER_DB_PASSWORD}
+      POSTGRES_DB: ${BRIEFER_DB}
+    volumes:
+      - briefer-db-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${BRIEFER_DB_USER}"]
+      interval: 10s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+    networks:
+      - lakehouse-network
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  briefer:
+    image: briefercloud/briefer:latest
+    container_name: briefer
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${BRIEFER_DB_USER}:${BRIEFER_DB_PASSWORD}@briefer-db:5432/${BRIEFER_DB}
+      FRONTEND_URL: ${BRIEFER_FRONTEND_URL:-http://localhost:3000}
+      SECRET_KEY: ${BRIEFER_SECRET_KEY}
+      JWT_SECRET: ${BRIEFER_JWT_SECRET}
+      NODE_ENV: production
+      ALLOW_HTTP: ${BRIEFER_ALLOW_HTTP:-true}
+    volumes:
+      - briefer-data:/app/data
+      - briefer-jupyter:/home/briefer/.jupyter
+    depends_on:
+      briefer-db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - lakehouse-network
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 3G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+volumes:
+  briefer-db-volume:
+    driver: local
+  briefer-data:
+    driver: local
+  briefer-jupyter:
+    driver: local
+
+networks:
+  lakehouse-network:
+    external: true

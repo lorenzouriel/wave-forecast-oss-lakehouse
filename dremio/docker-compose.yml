@@ -1,0 +1,55 @@
+services:
+  dremio:
+    image: dremio/dremio-oss:25.0
+    container_name: dremio
+    ports:
+      - "9047:9047"
+      - "31010:31010"
+      - "32010:32010"
+      - "45679:45679"
+    env_file:
+      - .env
+    environment:
+      DREMIO_JAVA_SERVER_EXTRA_OPTS: >-
+        -Dpaths.dist=file:///opt/dremio/data/dist
+        -Dservices.coordinator.enabled=true
+        -Dservices.coordinator.master.enabled=true
+        -Dservices.executor.enabled=true
+        -Dservices.conduit.port=45679
+      DREMIO_MAX_MEMORY_SIZE_MB: ${DREMIO_MAX_MEMORY_SIZE_MB}
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-http://minio:9000}
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    volumes:
+      - dremio-data:/opt/dremio/data
+      - ./config:/opt/dremio/conf
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9047"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - lakehouse-network
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 6G
+        reservations:
+          cpus: '2'
+          memory: 4G
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  dremio-data:
+    driver: local
+
+networks:
+  lakehouse-network:
+    external: true
