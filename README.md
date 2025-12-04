@@ -1,11 +1,8 @@
 # Wave Forecast OSS Lakehouse
-
 A complete, open-source data lakehouse solution for wave forecasting, built with modern data engineering tools.
 
 ## Architecture Overview
-
 This lakehouse implementation combines best-in-class open-source tools:
-
 - **MinIO**: S3-compatible object storage with medallion architecture (bronze/silver/gold)
 - **Dremio**: SQL query engine for data lakehouse
 - **Airbyte**: Data integration platform with 300+ source connectors
@@ -35,9 +32,7 @@ wave-forecast-oss-lakehouse/
 │   ├── .env                    # Dremio configuration
 │   └── config/                 # Dremio configuration files
 ├── airbyte/                    # Airbyte data integration service
-│   ├── docker-compose.yml      # Airbyte service definition
-│   ├── .env                    # Airbyte configuration
-│   └── temporal-dynamicconfig/ # Temporal workflow configuration
+│   └── README.md               # Guide to configure Airbyte
 ├── superset/                   # Superset BI & visualization service
 │   ├── docker-compose.yml      # Superset service definition
 │   ├── .env                    # Superset configuration
@@ -75,7 +70,7 @@ docker-compose --profile minio up -d
 docker-compose --profile minio --profile dremio up -d
 
 # Start Airbyte only
-docker-compose --profile airbyte up -d
+abctl local install
 
 # Start Airflow only
 docker-compose --profile airflow up -d
@@ -100,7 +95,7 @@ cd minio && docker-compose up -d && cd ..
 cd dremio && docker-compose up -d && cd ..
 
 # Start Airbyte
-cd airbyte && docker-compose up -d && cd ..
+abctl local install
 
 # Start Airflow
 cd airflow && docker-compose up -d && cd ..
@@ -120,7 +115,7 @@ Once all services are running, access them at:
 | **MinIO Console** | http://localhost:9001 | `waves-for-me` / `waves-for-me` |
 | **MinIO API** | http://localhost:9000 | - |
 | **Dremio** | http://localhost:9047 | Set on first login |
-| **Airbyte** | http://localhost:8000 | Set on first login |
+| **Airbyte** | http://localhost:8000 | Set on `abctl local credentials` |
 | **Airbyte API** | http://localhost:8001 | - |
 | **Superset** | http://localhost:8088 | `waves-for-me` / `waves-for-me` |
 | **Briefer** | http://localhost:3000 | Sign up on first access |
@@ -148,9 +143,9 @@ Each service has its own `.env` file in its directory. Key configurations:
 - `DREMIO_MAX_MEMORY_SIZE_MB`: Maximum memory allocation
 - `MINIO_ENDPOINT`, `MINIO_ACCESS_KEY`, `MINIO_SECRET_KEY`: MinIO connection
 
-**Airbyte** (`airbyte/.env`):
-- `AIRBYTE_DB_USER`, `AIRBYTE_DB_PASSWORD`: Airbyte metadata DB credentials
-- Various Airbyte configuration parameters
+**Airbyte** (`abctl local credentials`):
+- Run `abctl local credentials --email email@example.com` to change the email
+- Run `abctl local credentials --password YourStrongPasswordExample` to change password
 
 **Superset** (`superset/.env`):
 - `SUPERSET_DB_USER`, `SUPERSET_DB_PASSWORD`: Superset metadata DB credentials
@@ -217,16 +212,3 @@ docker-compose --profile all restart
 # Restart specific service
 docker-compose restart minio
 ```
-
-## License
-This project is open source and available under the MIT License.
-
-## Acknowledgments
-Built with:
-- [Apache Airflow](https://airflow.apache.org/)
-- [MinIO](https://min.io/)
-- [Dremio](https://www.dremio.com/)
-- [Airbyte](https://airbyte.com/)
-- [Apache Superset](https://superset.apache.org/)
-- [Briefer](https://briefer.cloud/)
-- [dbt](https://docs.getdbt.com/docs/introduction)
