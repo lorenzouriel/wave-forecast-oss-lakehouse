@@ -6,34 +6,40 @@
     )
 }}
 
--- Hub: Location
--- Business Key: latitude + longitude combination
-
-with source_data as (
-    select distinct
-        latitude,
-        longitude,
-        extracted_at as load_date
-    from {{ ref('stg_wave_forecasts') }}
+WITH parsed_json AS (
+    SELECT
+        CONVERT_FROM(CAST(raw_data AS VARCHAR), 'JSON') AS json_obj,
+        extracted_at
+    FROM {{ ref('stg_wave_forecasts') }}
     {% if is_incremental() %}
-    where extracted_at > (select max(load_date) from {{ this }})
+    WHERE extracted_at > (SELECT MAX(load_date) FROM {{ this }})
     {% endif %}
 ),
 
-hashed as (
-    select
-        {{ generate_hash_key(['latitude', 'longitude']) }} as location_hk,
+source_data AS (
+    SELECT DISTINCT
+        CAST(json_obj['latitude'] AS DOUBLE) AS latitude,
+        CAST(json_obj['longitude'] AS DOUBLE) AS longitude,
+        extracted_at AS load_date
+    FROM parsed_json
+    WHERE json_obj['latitude'] IS NOT NULL
+      AND json_obj['longitude'] IS NOT NULL
+),
+
+hashed AS (
+    SELECT
+        {{ generate_hash_key(['latitude', 'longitude']) }} AS location_hk,
         latitude,
         longitude,
         load_date,
-        {{ get_record_source('open_meteo_marine') }} as record_source
-    from source_data
+        {{ get_record_source('open_meteo_marine') }} AS record_source
+    FROM source_data
 )
 
-select distinct
+SELECT DISTINCT
     location_hk,
     latitude,
     longitude,
     load_date,
     record_source
-from hashed
+FROM hashed
