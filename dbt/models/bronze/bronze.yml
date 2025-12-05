@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: bronze_google_sheets_surf_spots
+    description: View on raw Google Sheets surf spots data
+    columns:
+      - name: _airbyte_ab_id
+        description: Airbyte record identifier
+      - name: _airbyte_emitted_at
+        description: Timestamp when record was emitted by Airbyte
+
+  - name: bronze_google_sheets_wave_conditions
+    description: View on raw Google Sheets wave conditions data
+    columns:
+      - name: _airbyte_ab_id
+        description: Airbyte record identifier
+      - name: _airbyte_emitted_at
+        description: Timestamp when record was emitted by Airbyte
+
+  - name: bronze_openweather_marine_forecasts
+    description: View on raw OpenWeather Marine forecast data
+    columns:
+      - name: _airbyte_ab_id
+        description: Airbyte record identifier
+      - name: _airbyte_emitted_at
+        description: Timestamp when record was emitted by Airbyte
+
+  - name: bronze_openweather_marine_historical
+    description: View on raw OpenWeather Marine historical data
+    columns:
+      - name: _airbyte_ab_id
+        description: Airbyte record identifier
+      - name: _airbyte_emitted_at
+        description: Timestamp when record was emitted by Airbyte

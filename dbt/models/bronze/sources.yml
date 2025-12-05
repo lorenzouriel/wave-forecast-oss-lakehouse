@@ -1,0 +1,45 @@
+version: 2
+
+sources:
+  - name: bronze
+    description: Raw data from various sources loaded via Airbyte into MinIO bronze layer
+    database: lakehouse-minio
+    schema: bronze
+    tables:
+      # Google Sheets - User surf preferences
+      - name: Respostas_ao_formulario_1
+        description: User surf preferences from Google Sheets form responses
+        meta:
+          source_system: google_sheets
+          load_frequency: daily
+          airbyte_stream: Respostas_ao_formulario_1
+        columns:
+          - name: _airbyte_raw_id
+            description: Airbyte unique record identifier
+          - name: _airbyte_extracted_at
+            description: Timestamp when Airbyte extracted the record (epoch ms)
+          - name: _airbyte_meta
+            description: Airbyte metadata (sync_id, changes)
+          - name: _airbyte_generation_id
+            description: Airbyte generation identifier
+          - name: _airbyte_data
+            description: JSON payload containing the actual data from Google Sheets
+
+      # OpenWeather Marine API - Wave forecasts
+      - name: OpenWeather_Waves
+        description: Wave forecast data from Open-Meteo Marine API
+        meta:
+          source_system: open_meteo_marine
+          load_frequency: hourly
+          airbyte_stream: OpenWeather_Waves
+        columns:
+          - name: _airbyte_raw_id
+            description: Airbyte unique record identifier
+          - name: _airbyte_extracted_at
+            description: Timestamp when Airbyte extracted the record (epoch ms)
+          - name: _airbyte_meta
+            description: Airbyte metadata (sync_id, changes)
+          - name: _airbyte_generation_id
+            description: Airbyte generation identifier
+          - name: _airbyte_data
+            description: JSON payload containing wave forecast data (nested hourly arrays)

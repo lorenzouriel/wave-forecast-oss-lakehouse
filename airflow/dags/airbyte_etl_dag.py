@@ -1,7 +1,7 @@
 """
 Airbyte ETL DAG - Multi-Source to MinIO
 This DAG triggers Airbyte sync jobs to extract data from multiple sources
-and load them into MinIO (bronze layer) as Parquet files.
+and load them into MinIO (bronze layer).
 
 Sources:
 - Google Sheets -> MinIO (bronze)
@@ -9,13 +9,13 @@ Sources:
 """
 
 from datetime import datetime, timedelta
-from airflow.decorators import dag, task
+from airflow.decorators import dag
 from airflow.providers.airbyte.operators.airbyte import AirbyteTriggerSyncOperator
 from airflow.providers.airbyte.sensors.airbyte import AirbyteJobSensor
 
 # Default arguments for the DAG
 default_args = {
-    'owner': 'airflow',
+    'owner': 'lorenzo',
     'depends_on_past': False,
     'email_on_failure': False,
     'email_on_retry': False,
@@ -23,13 +23,12 @@ default_args = {
     'retry_delay': timedelta(minutes=5),
 }
 
-
 @dag(
     dag_id='airbyte_multi_source_to_minio',
     default_args=default_args,
     description='ETL pipeline: Multiple sources -> MinIO (Bronze Layer)',
     start_date=datetime(2025, 1, 1),
-    schedule_interval='@daily',
+    schedule='@daily',
     catchup=False,
     tags=['airbyte', 'etl', 'google-sheets', 'open-weather-marine', 'minio', 'bronze'],
 )

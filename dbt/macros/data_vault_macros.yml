@@ -1,0 +1,11 @@
+version: 2
+
+macros:
+  - name: generate_hash_key
+    description: Generates a hash key for Data Vault entities using MD5
+
+  - name: generate_load_date
+    description: Generates the load date timestamp
+
+  - name: get_record_source
+    description: Returns the record source system name

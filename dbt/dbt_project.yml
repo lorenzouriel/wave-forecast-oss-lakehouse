@@ -1,0 +1,73 @@
+name: 'wave_forecast'
+version: '1.0.0'
+config-version: 2
+
+# This setting configures which "profile" dbt uses for this project.
+profile: 'wave_forecast'
+
+# These configurations specify where dbt should look for different types of files.
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+  - "logs"
+
+# Configuring models
+models:
+  wave_forecast:
+    # Bronze layer - sources as-is (no transformations here, just references)
+    bronze:
+      +materialized: view
+      +schema: bronze
+
+    # Silver layer - Data Vault 2.0 architecture
+    silver:
+      +materialized: incremental
+      +schema: silver
+      +on_schema_change: "append_new_columns"
+      +file_format: parquet
+
+      # Hubs - Business keys
+      hubs:
+        +tags: ["hub", "silver"]
+
+      # Links - Relationships between business entities
+      links:
+        +tags: ["link", "silver"]
+
+      # Satellites - Descriptive attributes
+      satellites:
+        +tags: ["satellite", "silver"]
+
+    # Gold layer - One Big Table (OBT) / Dimensional models
+    gold:
+      +materialized: table
+      +schema: gold
+      +file_format: parquet
+      +tags: ["gold", "obt"]
+
+# Documentation
+docs-paths: ["docs"]
+
+# Seeds configuration
+seeds:
+  wave_forecast:
+    +schema: bronze
+
+# Vars for the project
+vars:
+  # Data Vault settings
+  load_date: "current_timestamp()"
+  record_source: "airbyte"
+
+  # Hash algorithm for Data Vault
+  hash_algorithm: "md5"
+
+  # Partition settings
+  partition_by: ["load_date"]

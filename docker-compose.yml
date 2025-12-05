@@ -6,14 +6,9 @@
 # - Dremio: Data lakehouse query engine
 # - Airbyte: Data integration platform
 # - Airflow: Workflow orchestration
+# - dbt: Data transformation (Bronze -> Silver -> Gold)
 # - Superset: Business intelligence and data visualization
 # - Briefer: Collaborative data notebooks and dashboards
-#
-# To start all services: docker-compose --profile all up -d
-# To start specific service: docker-compose --profile <service-name> up -d
-# Available profiles: minio, dremio, airbyte, airflow, superset, briefer, all
-
-version: '3.8'
 
 networks:
   lakehouse-network:
@@ -237,4 +232,13 @@ services:
       service: briefer
     profiles:
       - briefer
+      - all
+
+  # dbt - Data Transformation (Bronze -> Silver -> Gold)
+  dbt:
+    extends:
+      file: ./dbt/docker-compose.yml
+      service: dbt
+    profiles:
+      - dbt
       - all

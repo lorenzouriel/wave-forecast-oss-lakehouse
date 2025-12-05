@@ -1,0 +1,30 @@
+wave_forecast:
+  target: dev
+  outputs:
+    dev:
+      type: dremio
+      software_host: dremio
+      port: 9047
+      user: "{{ env_var('DREMIO_USER') }}"
+      password: "{{ env_var('DREMIO_PASSWORD') }}"
+      use_ssl: false
+
+      # Data lake engine configuration
+      datalake: "lakehouse"
+
+      # Default schema for models (will be overridden by model-specific configs)
+      root_path: "lakehouse"
+
+      # Connection settings
+      threads: 4
+
+    prod:
+      type: dremio
+      software_host: dremio
+      port: 9047
+      user: "{{ env_var('DREMIO_USER') }}"
+      password: "{{ env_var('DREMIO_PASSWORD') }}"
+      use_ssl: false
+      datalake: "lakehouse"
+      root_path: "lakehouse"
+      threads: 8
