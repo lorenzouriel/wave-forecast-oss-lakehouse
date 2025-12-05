@@ -83,6 +83,7 @@ docker-compose run --rm dbt dbt deps
 docker-compose run --rm dbt dbt run
 
 # Run specific layer
+docker-compose run --rm dbt dbt run --select bronze
 docker-compose run --rm dbt dbt run --select silver
 docker-compose run --rm dbt dbt run --select gold
 
@@ -90,7 +91,7 @@ docker-compose run --rm dbt dbt run --select gold
 docker-compose run --rm dbt dbt run --select hub_surf_spot
 
 # Run tests
-docker-compose run --rm dbt dbt test
+# docker-compose run --rm dbt dbt test
 
 # Generate documentation
 docker-compose run --rm dbt dbt docs generate

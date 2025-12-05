@@ -9,11 +9,9 @@ wave_forecast:
       password: "{{ env_var('DREMIO_PASSWORD') }}"
       use_ssl: false
 
-      # Data lake engine configuration
-      datalake: "lakehouse"
-
-      # Default schema for models (will be overridden by model-specific configs)
-      root_path: "lakehouse"
+      # Write to object storage (MinIO via Dremio source)
+      object_storage_source: "lakehouse-minio"
+      object_storage_path: "bronze"
 
       # Connection settings
       threads: 4
@@ -25,6 +23,6 @@ wave_forecast:
       user: "{{ env_var('DREMIO_USER') }}"
       password: "{{ env_var('DREMIO_PASSWORD') }}"
       use_ssl: false
-      datalake: "lakehouse"
-      root_path: "lakehouse"
+      object_storage_source: "lakehouse-minio"
+      object_storage_path: "bronze"
       threads: 8
