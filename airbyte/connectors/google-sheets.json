@@ -1,0 +1,23 @@
+{
+  "name": "Google Sheets",
+  "workspaceId": "820e23fb-0720-4346-b0c0-eec7c7b049b2",
+  "definitionId": "71607ba1-c0ac-4799-8049-7f4b90dd50f7",
+  "configuration": {
+    "batch_size": 1000000,
+    "credentials": {
+      "auth_type": "Client",
+      "client_id": "******",
+      "client_secret": "******",
+      "refresh_token": "******"
+    },
+    "names_conversion": false,
+    "allow_leading_numbers": false,
+    "combine_number_word_pairs": false,
+    "read_empty_header_columns": false,
+    "remove_special_characters": false,
+    "combine_letter_number_pairs": false,
+    "remove_leading_trailing_underscores": false,
+    "stream_name_overrides": [],
+    "spreadsheet_id": "https://docs.google.com/spreadsheets/d/1iJeaCzJ7IY3Rg79woyCLVlG775T-M5CQiazd8nE64uA/edit?usp=drive_link"
+  }
+}

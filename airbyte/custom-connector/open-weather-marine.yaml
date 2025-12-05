@@ -1,0 +1,393 @@
+version: 7.0.4
+
+type: DeclarativeSource
+
+check:
+  type: CheckStream
+  stream_names:
+    - OpenWeather Waves
+
+definitions:
+  linked:
+    HttpRequester: {}
+
+streams:
+  - type: DeclarativeStream
+    retriever:
+      type: SimpleRetriever
+      record_selector:
+        type: RecordSelector
+        extractor:
+          type: DpathExtractor
+          field_path: []
+      requester:
+        type: HttpRequester
+        http_method: GET
+        url: https://marine-api.open-meteo.com/v1/marine
+        request_parameters:
+          latitude: "-24.008873"
+          longitude: "-46.412503"
+          timezone: auto
+          hourly: >-
+            ["wave_height", "wave_direction", "wave_period", "wave_peak_period",
+            "swell_wave_peak_period", "swell_wave_period",
+            "swell_wave_direction", "wind_wave_peak_period",
+            "swell_wave_height", "wind_wave_period", "wind_wave_direction",
+            "wind_wave_height", "secondary_swell_wave_height",
+            "secondary_swell_wave_period", "secondary_swell_wave_direction",
+            "tertiary_swell_wave_height", "tertiary_swell_wave_period",
+            "tertiary_swell_wave_direction", "sea_level_height_msl",
+            "sea_surface_temperature", "ocean_current_velocity",
+            "ocean_current_direction"]
+      decoder:
+        type: JsonDecoder
+    name: OpenWeather Waves
+    schema_loader:
+      type: InlineSchemaLoader
+      schema:
+        type: object
+        $schema: http://json-schema.org/schema#
+        properties:
+          latitude:
+            type:
+              - number
+              - "null"
+          longitude:
+            type:
+              - number
+              - "null"
+          generationtime_ms:
+            type:
+              - number
+              - "null"
+          utc_offset_seconds:
+            type:
+              - number
+              - "null"
+          timezone:
+            type:
+              - string
+              - "null"
+          timezone_abbreviation:
+            type:
+              - string
+              - "null"
+          elevation:
+            type:
+              - number
+              - "null"
+          hourly_units:
+            type:
+              - object
+              - "null"
+            properties:
+              time:
+                type:
+                  - string
+                  - "null"
+              wave_height:
+                type:
+                  - string
+                  - "null"
+              wave_direction:
+                type:
+                  - string
+                  - "null"
+              wave_period:
+                type:
+                  - string
+                  - "null"
+              wave_peak_period:
+                type:
+                  - string
+                  - "null"
+              swell_wave_peak_period:
+                type:
+                  - string
+                  - "null"
+              swell_wave_period:
+                type:
+                  - string
+                  - "null"
+              swell_wave_direction:
+                type:
+                  - string
+                  - "null"
+              wind_wave_peak_period:
+                type:
+                  - string
+                  - "null"
+              swell_wave_height:
+                type:
+                  - string
+                  - "null"
+              wind_wave_period:
+                type:
+                  - string
+                  - "null"
+              wind_wave_direction:
+                type:
+                  - string
+                  - "null"
+              wind_wave_height:
+                type:
+                  - string
+                  - "null"
+              secondary_swell_wave_height:
+                type:
+                  - string
+                  - "null"
+              secondary_swell_wave_period:
+                type:
+                  - string
+                  - "null"
+              secondary_swell_wave_direction:
+                type:
+                  - string
+                  - "null"
+              tertiary_swell_wave_height:
+                type:
+                  - string
+                  - "null"
+              tertiary_swell_wave_period:
+                type:
+                  - string
+                  - "null"
+              tertiary_swell_wave_direction:
+                type:
+                  - string
+                  - "null"
+              sea_level_height_msl:
+                type:
+                  - string
+                  - "null"
+              sea_surface_temperature:
+                type:
+                  - string
+                  - "null"
+              ocean_current_velocity:
+                type:
+                  - string
+                  - "null"
+              ocean_current_direction:
+                type:
+                  - string
+                  - "null"
+          hourly:
+            type:
+              - object
+              - "null"
+            properties:
+              time:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - string
+                    - "null"
+              wave_height:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wave_direction:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wave_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wave_peak_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - "null"
+                    - "null"
+              swell_wave_peak_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - "null"
+                    - "null"
+              swell_wave_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              swell_wave_direction:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wind_wave_peak_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - "null"
+                    - "null"
+              swell_wave_height:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wind_wave_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wind_wave_direction:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              wind_wave_height:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              secondary_swell_wave_height:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              secondary_swell_wave_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              secondary_swell_wave_direction:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              tertiary_swell_wave_height:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - "null"
+                    - "null"
+              tertiary_swell_wave_period:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - "null"
+                    - "null"
+              tertiary_swell_wave_direction:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - "null"
+                    - "null"
+              sea_level_height_msl:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              sea_surface_temperature:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              ocean_current_velocity:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+              ocean_current_direction:
+                type:
+                  - array
+                  - "null"
+                items:
+                  type:
+                    - number
+                    - "null"
+        additionalProperties: true
+
+spec:
+  type: Spec
+  connection_specification:
+    type: object
+    $schema: http://json-schema.org/draft-07/schema#
+    required: []
+    properties: {}
+    additionalProperties: true
+
+metadata:
+  testedStreams:
+    stream_0:
+      streamHash: ad11f9fa446b445a056b0f48d54e74059e0bc977
+    OpenWeather Waves:
+      streamHash: 38cf1c6ea524717b7f718ab437a0b5509291141c
+      isStale: false
+      hasResponse: true
+      responsesAreSuccessful: true
+      hasRecords: true
+      primaryKeysArePresent: true
+      primaryKeysAreUnique: true
+  autoImportSchema:
+    OpenWeather Waves: true
+
+concurrency_level:
+  type: ConcurrencyLevel
+  default_concurrency: 1

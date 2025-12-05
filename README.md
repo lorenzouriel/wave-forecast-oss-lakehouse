@@ -96,6 +96,7 @@ cd dremio && docker-compose up -d && cd ..
 
 # Start Airbyte
 abctl local install
+docker network connect lakehouse-network airbyte-abctl-control-plane
 
 # Start Airflow
 cd airflow && docker-compose up -d && cd ..

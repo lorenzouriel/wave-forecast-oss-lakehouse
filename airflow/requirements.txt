@@ -1,6 +1,7 @@
 # Airflow providers
 authlib==1.5.2
 python-ldap==3.4.4
+apache-airflow-providers-airbyte>=3.8.0
 
 # General dependencies
 pyodbc>=5.2.0

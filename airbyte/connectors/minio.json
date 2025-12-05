@@ -1,0 +1,21 @@
+{
+  "name": "MinIO",
+  "workspaceId": "820e23fb-0720-4346-b0c0-eec7c7b049b2",
+  "definitionId": "4816b78f-1489-44c1-9060-4b19d5fa9362",
+  "configuration": {
+    "format": {
+      "format_type": "Parquet",
+      "page_size_kb": 1024,
+      "block_size_mb": 128,
+      "compression_codec": "UNCOMPRESSED",
+      "max_padding_size_mb": 8,
+      "dictionary_page_size_kb": 1024
+    },
+    "access_key_id": "******",
+    "secret_access_key": "******",
+    "s3_bucket_name": "bronze",
+    "s3_bucket_path": "bronze/",
+    "s3_bucket_region": "us-east-1",
+    "s3_endpoint": "http://minio:9000"
+  }
+}
