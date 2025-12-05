@@ -1,0 +1,97 @@
+version: 2
+
+models:
+  # Hubs
+  - name: hub_location
+    description: Hub storing unique surf location business keys (latitude/longitude combinations)
+    columns:
+      - name: location_hk
+        description: Hash key for location (MD5 of latitude + longitude)
+        tests:
+          - unique
+          - not_null
+      - name: latitude
+        description: Location latitude coordinate
+      - name: longitude
+        description: Location longitude coordinate
+      - name: load_date
+        description: Timestamp when record was loaded into the hub
+      - name: record_source
+        description: Source system that provided this record
+
+  - name: hub_user
+    description: Hub storing unique user business keys (email addresses)
+    columns:
+      - name: user_hk
+        description: Hash key for user (MD5 of email)
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: User email address (business key)
+      - name: load_date
+        description: Timestamp when record was loaded into the hub
+      - name: record_source
+        description: Source system that provided this record
+
+  # Satellites
+  - name: sat_location_metadata
+    description: Satellite storing descriptive attributes for locations
+    columns:
+      - name: location_hk
+        description: Foreign key to hub_location
+        tests:
+          - not_null
+      - name: timezone
+        description: Timezone identifier for the location
+      - name: elevation
+        description: Elevation above sea level in meters
+      - name: load_date
+        description: Timestamp when record was loaded
+      - name: record_source
+        description: Source system that provided this record
+      - name: hash_diff
+        description: Hash of descriptive attributes for change detection
+
+  - name: sat_user_details
+    description: Satellite storing descriptive attributes for users
+    columns:
+      - name: user_hk
+        description: Foreign key to hub_user
+        tests:
+          - not_null
+      - name: user_name
+        description: User's full name
+      - name: nickname
+        description: User's nickname
+      - name: phone
+        description: User's phone number
+      - name: preferred_regions
+        description: Comma-separated list of preferred surf regions
+      - name: form_submitted_at
+        description: Timestamp when user submitted the form
+      - name: load_date
+        description: Timestamp when record was loaded
+      - name: record_source
+        description: Source system that provided this record
+      - name: hash_diff
+        description: Hash of descriptive attributes for change detection
+
+  - name: sat_wave_forecast_hourly
+    description: Satellite storing wave forecast hourly data (nested JSON arrays)
+    columns:
+      - name: forecast_hk
+        description: Hash key for forecast record
+        tests:
+          - unique
+          - not_null
+      - name: location_hk
+        description: Foreign key to hub_location
+      - name: hourly_data
+        description: JSON string containing arrays of hourly wave measurements
+      - name: load_date
+        description: Timestamp when record was loaded
+      - name: record_source
+        description: Source system that provided this record
+      - name: hash_diff
+        description: Hash of hourly data for change detection

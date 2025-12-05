@@ -19,17 +19,7 @@ services:
     working_dir: /usr/app/dbt
     networks:
       - lakehouse-network
-    depends_on:
-      - dremio
     restart: "no"
-    # Override CMD for different operations
-    # To run: docker-compose run dbt <command>
-    # Examples:
-    #   docker-compose run dbt dbt debug
-    #   docker-compose run dbt dbt run
-    #   docker-compose run dbt dbt test
-    #   docker-compose run dbt dbt docs generate
-    #   docker-compose run dbt dbt docs serve
 
 volumes:
   dbt-logs:

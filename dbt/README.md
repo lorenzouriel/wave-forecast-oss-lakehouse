@@ -1,15 +1,20 @@
 # dbt - Data Transformation Layer
-
 This directory contains the dbt (data build tool) project for transforming raw data from the bronze layer through the silver layer (Data Vault 2.0) to the gold layer (One Big Tables / OBT).
 
 ## Architecture
-
-```
-Bronze (Source) -> Silver (Data Vault) -> Gold (OBT)
-      ↓                    ↓                  ↓
-  Raw Data           Hubs, Links,      Business Views
-  (as-is)           Satellites          (Analytics)
-                    (Parquet)            (Parquet)
+```bash
+Bronze (MinIO)
+    ↓
+Staging Views (Parse JSON)
+    ↓
+Silver (Data Vault - Parquet)
+    ├── Hubs (Business Keys)
+    ├── Links (Relationships)
+    └── Satellites (Attributes)
+    ↓
+Gold (OBT - Parquet)
+    ├── Fact Tables (Wave Forecasts)
+    └── Dimension Tables (Users, Locations)
 ```
 
 ### Layers
@@ -51,11 +56,14 @@ DREMIO_PORT=9047
 From the root directory:
 
 ```bash
-# Build the dbt image
-docker-compose --profile dbt build
-
-# Or build just dbt
+# Build dbt container
 docker-compose build dbt
+
+# Test connection
+docker-compose run --rm dbt dbt debug
+
+# Run all transformations
+docker-compose run --rm dbt dbt run
 ```
 
 ## Usage

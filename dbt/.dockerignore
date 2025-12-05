@@ -1,0 +1,31 @@
+# dbt artifacts
+target/
+dbt_packages/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation (will be copied with volumes)
+*.md
+
+# Environment
+.env.local

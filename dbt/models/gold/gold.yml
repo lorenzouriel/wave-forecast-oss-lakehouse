@@ -1,0 +1,111 @@
+version: 2
+
+models:
+  - name: fct_wave_forecast_hourly
+    description: Fact table containing hourly wave forecast measurements (denormalized and unnested)
+    columns:
+      - name: wave_forecast_hourly_pk
+        description: Primary key (hash of forecast_hk + hour_index)
+        tests:
+          - unique
+          - not_null
+      - name: forecast_hk
+        description: Foreign key to source forecast record
+      - name: location_hk
+        description: Foreign key to location dimension
+      - name: latitude
+        description: Location latitude
+      - name: longitude
+        description: Location longitude
+      - name: timezone
+        description: Timezone identifier
+      - name: elevation
+        description: Elevation in meters
+      - name: forecast_timestamp
+        description: Specific hour this forecast applies to
+      - name: hour_index
+        description: Index in the hourly array (0-167 for 7 days)
+      - name: wave_height
+        description: Total wave height in meters
+      - name: wave_direction
+        description: Wave direction in degrees
+      - name: wave_period
+        description: Wave period in seconds
+      - name: swell_wave_height
+        description: Swell wave height in meters
+      - name: swell_wave_direction
+        description: Swell wave direction in degrees
+      - name: swell_wave_period
+        description: Swell wave period in seconds
+      - name: wind_wave_height
+        description: Wind wave height in meters
+      - name: wind_wave_direction
+        description: Wind wave direction in degrees
+      - name: wind_wave_period
+        description: Wind wave period in seconds
+      - name: secondary_swell_wave_height
+        description: Secondary swell wave height in meters
+      - name: secondary_swell_wave_direction
+        description: Secondary swell wave direction in degrees
+      - name: secondary_swell_wave_period
+        description: Secondary swell wave period in seconds
+      - name: sea_level_height
+        description: Sea level height above MSL in meters
+      - name: sea_surface_temperature
+        description: Sea surface temperature in Celsius
+      - name: ocean_current_velocity
+        description: Ocean current velocity in km/h
+      - name: ocean_current_direction
+        description: Ocean current direction in degrees
+      - name: forecast_loaded_at
+        description: When this forecast was loaded from source
+
+  - name: dim_users
+    description: User dimension table with denormalized attributes
+    columns:
+      - name: user_hk
+        description: User hash key (primary key)
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: User email address
+      - name: user_name
+        description: User's full name
+      - name: nickname
+        description: User's nickname
+      - name: phone
+        description: User's phone number
+      - name: preferred_regions
+        description: Comma-separated preferred surf regions
+      - name: preferred_regions_array
+        description: Array of preferred surf regions
+      - name: form_submitted_at
+        description: When user submitted preferences
+      - name: user_created_at
+        description: When user was first seen
+      - name: last_updated_at
+        description: Last update to user details
+
+  - name: dim_locations
+    description: Location dimension table with denormalized attributes
+    columns:
+      - name: location_hk
+        description: Location hash key (primary key)
+        tests:
+          - unique
+          - not_null
+      - name: latitude
+        description: Location latitude coordinate
+      - name: longitude
+        description: Location longitude coordinate
+      - name: timezone
+        description: Timezone identifier
+      - name: elevation
+        description: Elevation above sea level in meters
+      - name: location_label
+        description: Human-readable location label
+      - name: location_created_at
+        description: When location was first seen
+      - name: last_updated_at
+        description: Last update to location metadata
