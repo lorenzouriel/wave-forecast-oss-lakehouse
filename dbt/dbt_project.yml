@@ -23,7 +23,7 @@ models:
   wave_forecast:
     # Bronze layer - sources as-is (no transformations here, just references)
     bronze:
-      +materialized: view
+      +materialized: table
       +schema: bronze
 
     # Silver layer - Data Vault 2.0 architecture

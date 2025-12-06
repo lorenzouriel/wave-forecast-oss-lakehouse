@@ -16,7 +16,7 @@ with source_data as (
         timezone,
         elevation,
         extracted_at as load_date
-    from {{ ref('stg_wave_forecasts') }}
+    from {{ ref('stg_wave_forecast') }}
     {% if is_incremental() %}
     where extracted_at > (select max(load_date) from {{ this }})
     {% endif %}

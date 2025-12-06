@@ -9,11 +9,12 @@ wave_forecast:
       password: "{{ env_var('DREMIO_PASSWORD') }}"
       use_ssl: false
 
-      # Write to object storage (MinIO via Dremio source)
-      object_storage_source: "lakehouse-minio"
-      object_storage_path: "bronze"
+      database: lakehouse-minio      # <-- REQUIRED
+      schema: bronze                 # <-- will be overridden by model config per folder
 
-      # Connection settings
+      # Dremio source that points to MinIO
+      object_storage_source: "lakehouse-minio"
+
       threads: 4
 
     prod:
@@ -24,5 +25,4 @@ wave_forecast:
       password: "{{ env_var('DREMIO_PASSWORD') }}"
       use_ssl: false
       object_storage_source: "lakehouse-minio"
-      object_storage_path: "bronze"
       threads: 8

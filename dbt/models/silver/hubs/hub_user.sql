@@ -13,7 +13,7 @@ with source_data as (
     select
         email,
         extracted_at as load_date
-    from {{ ref('stg_user_preferences') }}
+    from {{ ref('stg_user_preference') }}
     where email is not null
     {% if is_incremental() %}
     and extracted_at > (select max(load_date) from {{ this }})

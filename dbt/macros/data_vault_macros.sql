@@ -14,3 +14,11 @@
         {{ custom_schema_name | trim }}
     {%- endif -%}
 {%- endmacro %}
+
+{# Macro to handle Dremio table drops #}
+{% macro dremio_drop_table_if_exists() %}
+    {% set drop_query %}
+        DROP TABLE IF EXISTS {{ this }}
+    {% endset %}
+    {% do run_query(drop_query) %}
+{% endmacro %}

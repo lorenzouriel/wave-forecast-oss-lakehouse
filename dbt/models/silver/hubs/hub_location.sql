@@ -10,7 +10,7 @@ WITH parsed_json AS (
     SELECT
         CONVERT_FROM(CAST(raw_data AS VARCHAR), 'JSON') AS json_obj,
         extracted_at
-    FROM {{ ref('stg_wave_forecasts') }}
+    FROM {{ ref('stg_wave_forecast') }}
     {% if is_incremental() %}
     WHERE extracted_at > (SELECT MAX(load_date) FROM {{ this }})
     {% endif %}

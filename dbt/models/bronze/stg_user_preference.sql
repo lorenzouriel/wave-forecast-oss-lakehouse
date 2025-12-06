@@ -1,6 +1,8 @@
 {{
     config(
-        materialized='view'
+        materialized='table',
+        file_format='parquet',
+        pre_hook = 'DROP TABLE IF EXISTS "lakehouse-minio".bronze.stg_user_preference'
     )
 }}
 
