@@ -18,12 +18,13 @@ WITH parsed_json AS (
 
 source_data AS (
     SELECT DISTINCT
-        CAST(json_obj['latitude'] AS DOUBLE) AS latitude,
-        CAST(json_obj['longitude'] AS DOUBLE) AS longitude,
+        -- Use Dremio's JSON_VALUE or CAST to extract JSON fields
+        CAST(JSON_VALUE(json_obj, '$.latitude') AS DOUBLE) AS latitude,
+        CAST(JSON_VALUE(json_obj, '$.longitude') AS DOUBLE) AS longitude,
         extracted_at AS load_date
     FROM parsed_json
-    WHERE json_obj['latitude'] IS NOT NULL
-      AND json_obj['longitude'] IS NOT NULL
+    WHERE JSON_VALUE(json_obj, '$.latitude') IS NOT NULL
+      AND JSON_VALUE(json_obj, '$.longitude') IS NOT NULL
 ),
 
 hashed AS (
